@@ -34,7 +34,7 @@ public class FuerzaArmada {
 
 	public Object getCapacidadDeDefensa() {
 		// TODO Auto-generated method stub
-		return this.convoy.size();
+		return this.convoy.size() - 1;
 	}
 
 	public void crearBatalla(String string, TipoDeBatalla tipoBatalla, Double longitud, Double latitud) {
@@ -51,52 +51,69 @@ public class FuerzaArmada {
 		return this.batallas.get(string);
 	}
 
-	public boolean enviarALaBatalla(String string, Integer i) throws VehiculoIncompatible, VehiculoInexistente, BatallaInexistente {
+	public Boolean enviarALaBatalla(String string, Integer i)
+			throws VehiculoIncompatible, VehiculoInexistente, BatallaInexistente {
 		// TODO Auto-generated method stub
 
 		Boolean estado = false;
 		if (this.batallas.containsKey(string)) {
 
-			Iterator<Vehiculo> iterator = this.convoy.iterator();
+			Batalla batalla = this.batallas.get(string);
 
-			while (iterator.hasNext()) {
+			Vehiculo vehiculo = this.buscarVehiculo(i);
 
-				Vehiculo vehiculo = (Vehiculo) iterator.next();
-				if (vehiculo.getId().equals(i)) {
-					switch (this.batallas.get(string).tipoBatalla()) {
+			if (vehiculo != null) {
+				switch (this.batallas.get(string).tipoBatalla()) {
 
-					case TERRESTRE:
-						if (iterator.next() instanceof Terreste) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
-						}
-						break;
-					case NAVAL:
-						if (iterator.next() instanceof Acuatico) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
-						}
+				case TERRESTRE:
+					if (vehiculo instanceof Terreste) {
+						this.batallas.remove(string, batalla);
+						estado = batalla.vehiculosEnLaBatalla.add(vehiculo);
 
-						break;
-
-					case AEREA:
-						if (iterator.next() instanceof Volador) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
-						}
-
-					default:
-						throw new VehiculoIncompatible("Vehiculo Incompatible");
-
+						this.batallas.put(string, batalla);
 					}
-				}
+					break;
+				case NAVAL:
+					if (vehiculo instanceof Acuatico) {
 
+						batalla.vehiculosEnLaBatalla.add(vehiculo);
+						this.batallas.remove(string, batalla);
+						this.batallas.put(string, batalla);
+					}
+
+					break;
+
+				case AEREA:
+					if (vehiculo instanceof Volador) {
+						estado = batalla.vehiculosEnLaBatalla.add(vehiculo);
+						this.batallas.remove(string, batalla);
+						this.batallas.put(string, batalla);
+					}
+					break;
+				default:
+					throw new VehiculoIncompatible("Vehiculo Incompatible");
+
+				}
+			} else {
+				throw new VehiculoInexistente("no existe el vehiculo");
 			}
-			if (!estado) {
-				throw new VehiculoInexistente("Vehiculo Incompatible");
-			}
+
 		} else {
 
-			throw new BatallaInexistente("No existe la batalla"); 
+			throw new BatallaInexistente("No existe la batalla");
 		}
-		return estado;
+		return true;
+	}
+
+	private Vehiculo buscarVehiculo(Integer i) {
+		// TODO Auto-generated method stub
+		for (Vehiculo vehiculo : this.convoy) {
+			if (vehiculo.getId().equals(i)) {
+				return vehiculo;
+			}
+
+		}
+		return null;
 	}
 
 }
