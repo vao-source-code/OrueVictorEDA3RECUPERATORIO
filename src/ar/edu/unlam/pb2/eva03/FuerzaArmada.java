@@ -67,19 +67,19 @@ public class FuerzaArmada {
 
 					case TERRESTRE:
 						if (iterator.next() instanceof Terreste) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add((Vehiculo) iterator.next());
+							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
 						}
 						break;
 					case NAVAL:
 						if (iterator.next() instanceof Acuatico) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add((Vehiculo) iterator.next());
+							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
 						}
 
 						break;
 
 					case AEREA:
 						if (iterator.next() instanceof Volador) {
-							estado = this.batallas.get(string).vehiculosEnLaBatalla.add((Vehiculo) iterator.next());
+							estado = this.batallas.get(string).vehiculosEnLaBatalla.add(iterator.next());
 						}
 
 					default:
