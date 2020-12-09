@@ -71,6 +71,8 @@ public class FuerzaArmada {
 						estado = batalla.vehiculosEnLaBatalla.add(vehiculo);
 
 						this.batallas.put(string, batalla);
+					}	else {
+						throw new VehiculoIncompatible("Vehiculo Incompatible");
 					}
 					break;
 				case NAVAL:
@@ -79,6 +81,8 @@ public class FuerzaArmada {
 						batalla.vehiculosEnLaBatalla.add(vehiculo);
 						this.batallas.remove(string, batalla);
 						this.batallas.put(string, batalla);
+					}	else {
+						throw new VehiculoIncompatible("Vehiculo Incompatible");
 					}
 
 					break;
@@ -89,9 +93,11 @@ public class FuerzaArmada {
 						this.batallas.remove(string, batalla);
 						this.batallas.put(string, batalla);
 					}
+					else {
+						throw new VehiculoIncompatible("Vehiculo Incompatible");
+					}
 					break;
-				default:
-					throw new VehiculoIncompatible("Vehiculo Incompatible");
+				
 
 				}
 			} else {
