@@ -96,7 +96,7 @@ public class FuerzaArmada {
 
 			throw new BatallaInexistente("No existe la batalla"); 
 		}
-		return false;
+		return estado;
 	}
 
 }
